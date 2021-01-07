@@ -1,8 +1,24 @@
 const inquirer = require("inquirer");
 const path = require("path");
 const fs = require("fs");
+const mysql = require('mysql');
 
+const connection = mysql.createConnection({
+  host: 'localhost',
+  // Your port; if not 3306
+  port: 3306,
+  // Your username
+  user: 'root',
+  // Be sure to update with your own MySQL password!
+  password: 'password',
+  database: 'employeetracker',
+});
 
+connection.connect((err) => {
+  if (err) throw err;
+  console.log(`connected as id ${connection.threadId}`);
+  // connection.end();
+});
 // inquirer.prompt([
 //     {
 //       type: "list",
@@ -15,11 +31,38 @@ const fs = require("fs");
 //     });
 
    function viewAllEmployees(){
-       console.log("Here are the employees")
-   }
+     console.log("inside viewALLEmp;oyees")
+    
+      connection.query('SELECT * FROM employee', (err, res) => {
+        if (err) throw err;
+        console.log("Here are the employees")
+        console.log(res);
+        connection.end();
+      });
+    };
+
 
    function viewAllEmployeesbyManager(){
     console.log("Here are the employees by Manager")
+    inquirer.prompt([
+      {
+        type: "list",
+        name: "name",
+        message: "What would you like to do?",
+        choices: ["View all Employees", "View all Employees by Manager", "Add Employee", "Remove Employee", "Update Employee Role", "Update Employee Manager"],
+      },
+    ])
+    .then((data) => { 
+        console.log(data);
+        switchRole(data.name );
+      });
+
+    connection.query('SELECT * FROM employee', (err, res) => {
+      if (err) throw err;
+      console.log("Here are the employees")
+      console.log(res);
+      connection.end();
+    });
    };
 
    function addEmployee(){
@@ -37,12 +80,6 @@ const fs = require("fs");
    function updateEmployeeManager(){
     console.log("update employee manager")
    }
-
-
-
-
-
-
     inquirer.prompt([
         {
           type: "list",
@@ -60,6 +97,7 @@ const fs = require("fs");
 const switchRole = (choices) => {
     switch (choices) {
       case "View all Employees":
+        console.log("inside  case sttatement")
           viewAllEmployees();
         // managerSelect = true;
         // console.log("Ask manager question, Line 63");
@@ -70,6 +108,7 @@ const switchRole = (choices) => {
         
         break;
       case "View all Employees by Manager":
+
         viewAllEmployeesbyManager();
 
         // askEngineerQuestion().then(({ github }) => {
