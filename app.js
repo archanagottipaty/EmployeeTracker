@@ -36,7 +36,7 @@ connection.connect((err) => {
       connection.query('SELECT * FROM employee', (err, res) => {
         if (err) throw err;
         console.log("Here are the employees")
-        console.log(res);
+        console.table(res);
         connection.end();
       });
     };
@@ -44,25 +44,28 @@ connection.connect((err) => {
 
    function viewAllEmployeesbyManager(){
     console.log("Here are the employees by Manager")
-    inquirer.prompt([
-      {
-        type: "list",
-        name: "name",
-        message: "What would you like to do?",
-        choices: ["View all Employees", "View all Employees by Manager", "Add Employee", "Remove Employee", "Update Employee Role", "Update Employee Manager"],
-      },
-    ])
-    .then((data) => { 
-        console.log(data);
-        switchRole(data.name );
-      });
-
-    connection.query('SELECT * FROM employee', (err, res) => {
+    connection.query('SELECT employee.id,first_name, last_name FROM employee INNER JOIN role1 on employee.role_id = role1.id && role1.title = "manager"'
+    , (err, res) => {
       if (err) throw err;
-      console.log("Here are the employees")
+      console.log("Here are the Managers:")
       console.log(res);
-      connection.end();
+      // connection.end();
+      // inquirer.prompt([
+    //   {
+    //     type: "list",
+    //     name: "manager",
+    //     message: "Please select a Manager?",
+    //     choices: [ "VVVVVVV"],
+    //   },
+    // ])
+    // .then((data) => { 
+    //     console.log(data);
+    //     switchRole(data.name );
+    //   });
     });
+    
+
+    
    };
 
    function addEmployee(){
@@ -85,16 +88,16 @@ connection.connect((err) => {
           type: "list",
           name: "name",
           message: "What would you like to do?",
-          choices: ["View all Employees", "View all Employees by Manager", "Add Employee", "Remove Employee", "Update Employee Role", "Update Employee Manager"],
+          choices: ["View all Employees", "Add Employee", "Add Department", "Add Role"],
         },
       ])
       .then((data) => { 
           console.log(data);
-          switchRole(data.name );
+          switchSelect(data.name );
         });
 
     //Function that calls ask***Question() depending on selection
-const switchRole = (choices) => {
+const switchSelect = (choices) => {
     switch (choices) {
       case "View all Employees":
         console.log("inside  case sttatement")
@@ -108,6 +111,7 @@ const switchRole = (choices) => {
         
         break;
       case "View all Employees by Manager":
+        console.log("inside viewallemployeesbymanager")
 
         viewAllEmployeesbyManager();
 
