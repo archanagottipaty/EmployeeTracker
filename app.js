@@ -140,7 +140,7 @@ inquirer
   .prompt([
     {
       type: "message",
-      name: "name",
+      name: "title",
       message: "Name of Role?",
     },
     {
