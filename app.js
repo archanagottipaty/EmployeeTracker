@@ -76,14 +76,12 @@ function addEmployee() {
       },
     ])
     .then((data) => {
-      console.log(data);
       connection.query(
         "INSERT INTO employee SET ?",
 
         data,
         (err, res) => {
           if (err) throw err;
-          console.log(res);
           console.log(`${res.affectedRows} employee inserted!\n`);
           runApp();
         }
@@ -110,7 +108,6 @@ function addDepartment() {
         data,
         (err, res) => {
           if (err) throw err;
-          console.log(res);
           console.log(`${res.affectedRows} department inserted!\n`);
           runApp();
         }
@@ -143,11 +140,9 @@ inquirer
     console.log(data);
     connection.query(
       "INSERT INTO role1 SET ?",
-
       data,
       (err, res) => {
         if (err) throw err;
-        console.log(res);
         console.log(`${res.affectedRows} role1 inserted!\n`);
         runApp();
       }
@@ -169,16 +164,13 @@ function updateEmployeeRole() {
         message: "which employee do you want to update?",
         choices: choices,
       },
-
       {
         type: "input",
         name: "role_id",
         message: "What is the new role id?",
-      },
-      
+      },  
     ])
     .then( data => {
-      console.log(data);
 
       connection.query(
         "UPDATE employee SET ? WHERE ?",
@@ -198,7 +190,6 @@ function updateEmployeeRole() {
       );
     })  
   });
-  console.log("update employee role"); 
 }
 
 function runApp() {
@@ -220,7 +211,6 @@ function runApp() {
       },
     ])
     .then((data) => {
-      console.log(data);
       switchSelect(data.name);
     });
 }
