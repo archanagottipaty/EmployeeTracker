@@ -16,55 +16,40 @@ const connection = mysql.createConnection({
 
 connection.connect((err) => {
   if (err) throw err;
-  console.log(`connected as id ${connection.threadId}`);
-  // connection.end();
+  console.log( `\n` +`connected as id ${connection.threadId}` + `\n`);
 });
-// inquirer.prompt([
-//     {
-//       type: "list",
-//       name: "name",
-//       message: "What would you like to do?",
-//       choices: ["View all Employees", "View all Employees by Manager", "Add Employee", "Remove Employee", "Update Employee Role", "Update Employee Manager"],
-//     },
-//   ])
-//   .then((data) => { switchRole(({ choices }));
-//     });
 
 function viewAllEmployees() {
   console.log("inside viewALLEmployees");
 
   connection.query("SELECT * FROM employee", (err, res) => {
     if (err) throw err;
-    console.log("Here are the employees");
+    console.log("Here are the employees: ");
     console.table(res);
     runApp();
   });
 }
 
 function viewAllDepartments(){
-
-console.log("inside viewAllDepartments");
-
   connection.query("SELECT * FROM department", (err, res) => {
     if (err) throw err;
-    console.log("Here is the department:");
+    console.log("Here is the departments:  ");
     console.table(res);
     runApp();
   });
 };
 
 function viewAllRoles(){
-
-  console.log("inside viewAllRoles");
   
     connection.query("SELECT * FROM role1", (err, res) => {
       if (err) throw err;
-      console.log("Here are the roles:");
+      console.log("Here are the roles:  ");
       console.table(res);
       runApp();
     });
   };
-  
+
+//function to add an Employee to the Employee table
 function addEmployee() {
   console.log("Add Employee");
   inquirer
@@ -101,12 +86,12 @@ function addEmployee() {
           console.log(res);
           console.log(`${res.affectedRows} employee inserted!\n`);
           runApp();
-          // Call updateProduct AFTER the INSERT completes
         }
       );
     });
 }
 
+//function to add a Department to the Department table
 function addDepartment() {
   console.log("Add Department");
   inquirer
@@ -128,12 +113,12 @@ function addDepartment() {
           console.log(res);
           console.log(`${res.affectedRows} department inserted!\n`);
           runApp();
-          // Call updateProduct AFTER the INSERT completes
         }
       );
     });
 }
 
+//function to add a Role to the Role table
 function addRole(){
   console.log("Add Role");
 inquirer
@@ -165,7 +150,6 @@ inquirer
         console.log(res);
         console.log(`${res.affectedRows} role1 inserted!\n`);
         runApp();
-        // Call updateProduct AFTER the INSERT completes
       }
     );
   });
@@ -209,21 +193,12 @@ function updateEmployeeRole() {
         (err, res) => {
           if (err) throw err;
           console.log(`${res.affectedRows} products updated!\n`);
-          // Call deleteProduct AFTER the UPDATE completes
-          
           runApp();
         }
       );
-
-
-    })
-    
-
-   
+    })  
   });
-
-  console.log("update employee role");
-  
+  console.log("update employee role"); 
 }
 
 function runApp() {
@@ -240,9 +215,7 @@ function runApp() {
           "Add Employee",
           "Add Department",
           "Add Role",
-          "Update Employee Role",
-
-          
+          "Update Employee Role",   
         ],
       },
     ])
@@ -256,79 +229,33 @@ function runApp() {
 const switchSelect = (choices) => {
   switch (choices) {
     case "View all Employees":
-      console.log("inside  case statement");
       viewAllEmployees();
-      // managerSelect = true;
-      // console.log("Ask manager question, Line 63");
-      // askManagerQuestion().then(({ office }) => {
-      //   const manager = new Manager(name, id, email, office);
-      //   employees.push(manager);
-      //   askAnotherRole();
-
       break;
 
       case "View all Departments":
-      console.log("inside  case statement");
       viewAllDepartments();
-      // managerSelect = true;
-      // console.log("Ask manager question, Line 63");
-      // askManagerQuestion().then(({ office }) => {
-      //   const manager = new Manager(name, id, email, office);
-      //   employees.push(manager);
-      //   askAnotherRole();
-
       break;
 
       case "View all Roles":
-      console.log("inside  case statement");
       viewAllRoles();
-      // managerSelect = true;
-      // console.log("Ask manager question, Line 63");
-      // askManagerQuestion().then(({ office }) => {
-      //   const manager = new Manager(name, id, email, office);
-      //   employees.push(manager);
-      //   askAnotherRole();
-
       break;
-
-      
+    
     case "Add Employee":
-      //  askInternQuestion().then(({ school }) => {
-      //   const intern = new Intern(name, id, email, school);
-      //    employees.push(intern);
-
       addEmployee();
       break;
 
       case "Add Department":
-        //  askInternQuestion().then(({ school }) => {
-        //   const intern = new Intern(name, id, email, school);
-        //    employees.push(intern);
         addDepartment() ;
-       
         break;
 
         case "Add Role":
-        //  askInternQuestion().then(({ school }) => {
-        //   const intern = new Intern(name, id, email, school);
-        //    employees.push(intern);
         addRole() ;
-       
         break;
 
-      
-
     case "Update Employee Role":
-      //  askInternQuestion().then(({ school }) => {
-      //   const intern = new Intern(name, id, email, school);
-      //    employees.push(intern);
-
       updateEmployeeRole();
-
       break;
-
     default:
   }
 };
-
 runApp();
