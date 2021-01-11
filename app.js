@@ -133,6 +133,44 @@ function addDepartment() {
       );
     });
 }
+
+function addRole(){
+  console.log("Add Role");
+inquirer
+  .prompt([
+    {
+      type: "message",
+      name: "name",
+      message: "Name of Role?",
+    },
+    {
+      type: "message",
+      name: "salary",
+      message: "What is the salary?",
+    },
+    {
+      type: "message",
+      name: "department_id",
+      message: "What is the department id?",
+    },
+  ])
+  .then((data) => {
+    console.log(data);
+    connection.query(
+      "INSERT INTO role1 SET ?",
+
+      data,
+      (err, res) => {
+        if (err) throw err;
+        console.log(res);
+        console.log(`${res.affectedRows} role1 inserted!\n`);
+        runApp();
+        // Call updateProduct AFTER the INSERT completes
+      }
+    );
+  });
+}
+
 function updateEmployeeRole() {
   connection.query("SELECT * FROM employee", (err, res) => {
     if (err) throw err;
